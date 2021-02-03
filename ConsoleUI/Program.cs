@@ -14,7 +14,7 @@ namespace ConsoleUI
                 Console.WriteLine(car.Description);
             }
 
-            Console.WriteLine("\n" + carManager.GetCar(3).Description);
+            Console.WriteLine("\n {0}", carManager.GetCar(3).Description);
         }
     }
 }
