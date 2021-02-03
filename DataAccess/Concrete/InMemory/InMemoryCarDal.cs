@@ -32,7 +32,7 @@ namespace DataAccess.Concrete.InMemory
             _cars.Remove(carToDelete);
         }
 
-        public Car Get(int id)
+        public Car GetById(int id)
         {
             return _cars.SingleOrDefault(c => c.CarId == id);
         }
