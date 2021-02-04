@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using DataAccess.Abstract;
 using Entities.Concrete;
 
@@ -18,31 +20,30 @@ namespace DataAccess.Concrete.InMemory
                 new Brand{BrandId=6,BrandName="Fiat"},
             };
         }
-        public void Add(Brand brand)
+
+        public void Add(Brand entity)
         {
-            _brands.Add(brand);
+            throw new NotImplementedException();
         }
 
-        public void Delete(Brand brand)
+        public void Delete(Brand entity)
         {
-            Brand brandToDelete = _brands.SingleOrDefault(bTD => bTD.BrandId == brand.BrandId);
-            _brands.Remove(brandToDelete);
+            throw new NotImplementedException();
         }
 
-        public List<Brand> GetAll()
+        public Brand Get(Expression<Func<Brand, bool>> filter)
         {
-            return _brands;
+            throw new NotImplementedException();
         }
 
-        public Brand GetById(int id)
+        public List<Brand> GetAll(Expression<Func<Brand, bool>> filter = null)
         {
-            return _brands.SingleOrDefault(b => b.BrandId == id);
+            throw new NotImplementedException();
         }
 
-        public void Update(Brand brand)
+        public void Update(Brand entity)
         {
-            Brand updateToBrand = _brands.SingleOrDefault(uTB => uTB.BrandId == brand.BrandId);
-            updateToBrand.BrandName = brand.BrandName;
+            throw new NotImplementedException();
         }
     }
 }

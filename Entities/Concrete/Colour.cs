@@ -1,8 +1,10 @@
+using Entities.Abstract;
+
 namespace Entities.Concrete
 {
-    public class Colour
+    public class Colour : IEntity
     {
-        public int ColorId { get; set; }
-        public string ColorName { get; set; }
+        public int ColourId { get; set; }
+        public string ColourName { get; set; }
     }
 }

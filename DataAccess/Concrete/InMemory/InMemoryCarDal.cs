@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using DataAccess.Abstract;
 using Entities.Concrete;
 
@@ -21,40 +22,29 @@ namespace DataAccess.Concrete.InMemory
             };
         }
 
-        public void Add(Car car)
+        public void Add(Car entity)
         {
-            _cars.Add(car);
+            throw new NotImplementedException();
         }
 
-        public void Delete(Car car)
+        public void Delete(Car entity)
         {
-            Car carToDelete = _cars.SingleOrDefault(c => c.CarId == car.CarId);
-            _cars.Remove(carToDelete);
+            throw new NotImplementedException();
         }
 
-        public Car GetById(int id)
+        public Car Get(Expression<Func<Car, bool>> filter)
         {
-            return _cars.SingleOrDefault(c => c.CarId == id);
+            throw new NotImplementedException();
         }
 
-        public List<Car> GetAll()
+        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
         {
-            return _cars;
+            throw new NotImplementedException();
         }
 
-        public List<Car> GetAllByBrand(int brandId)
+        public void Update(Car entity)
         {
-            return _cars.Where(c => c.BrandId == brandId).ToList();
-        }
-
-        public void Update(Car car)
-        {
-            Car carToUpdate = _cars.SingleOrDefault(c => c.CarId == car.CarId);
-            carToUpdate.BrandId = car.BrandId;
-            carToUpdate.ColorId = car.ColorId;
-            carToUpdate.ModelYear = car.ModelYear;
-            carToUpdate.DailyPrice = car.DailyPrice;
-            carToUpdate.Description = car.Description;
+            throw new NotImplementedException();
         }
     }
 }
