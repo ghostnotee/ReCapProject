@@ -13,12 +13,12 @@ namespace DataAccess.Concrete.InMemory
         public InMemoryCarDal()
         {
             _cars = new List<Car> {
-                new Car{CarId=1,BrandId=1,ColorId=1,DailyPrice=250,ModelYear=new DateTime(2017,01,01),Description="Araç hakkında bir takım bilgiler."},
-                new Car{CarId=2,BrandId=1,ColorId=2,DailyPrice=300,ModelYear=new DateTime(2020,01,01),Description="Araç çok acayip manyak bir şey."},
-                new Car{CarId=3,BrandId=2,ColorId=3,DailyPrice=400,ModelYear=new DateTime(2019,01,01),Description="Araç resmen yürüyen Uçak !!!"},
-                new Car{CarId=4,BrandId=2,ColorId=2,DailyPrice=500,ModelYear=new DateTime(2015,01,01),Description="Araç öle böle değil yani !"},
-                new Car{CarId=5,BrandId=3,ColorId=4,DailyPrice=1000,ModelYear=new DateTime(2021,01,01),Description="Araç bilgisi saymakla bitmez."},
-                new Car{CarId=6,BrandId=4,ColorId=3,DailyPrice=550,ModelYear=new DateTime(2012,01,01),Description="Araç hakkında daha ne söylenebilir bilemiyorum."},
+                new Car{CarId=1,BrandId=1,ColourId=1,DailyPrice=250,ModelYear=new DateTime(2017,01,01),Description="Araç hakkında bir takım bilgiler."},
+                new Car{CarId=2,BrandId=1,ColourId=2,DailyPrice=300,ModelYear=new DateTime(2020,01,01),Description="Araç çok acayip manyak bir şey."},
+                new Car{CarId=3,BrandId=2,ColourId=3,DailyPrice=400,ModelYear=new DateTime(2019,01,01),Description="Araç resmen yürüyen Uçak !!!"},
+                new Car{CarId=4,BrandId=2,ColourId=2,DailyPrice=500,ModelYear=new DateTime(2015,01,01),Description="Araç öle böle değil yani !"},
+                new Car{CarId=5,BrandId=3,ColourId=4,DailyPrice=1000,ModelYear=new DateTime(2021,01,01),Description="Araç bilgisi saymakla bitmez."},
+                new Car{CarId=6,BrandId=4,ColourId=3,DailyPrice=550,ModelYear=new DateTime(2012,01,01),Description="Araç hakkında daha ne söylenebilir bilemiyorum."},
             };
         }
 
