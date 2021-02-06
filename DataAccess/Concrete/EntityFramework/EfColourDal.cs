@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -21,22 +22,38 @@ namespace DataAccess.Concrete.EntityFramework
 
         public void Delete(Colour entity)
         {
-            throw new NotImplementedException();
+            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            {
+                var deletedEntity = context.Entry(entity);
+                deletedEntity.State = EntityState.Deleted;
+                context.SaveChanges();
+            }
         }
 
         public Colour Get(Expression<Func<Colour, bool>> filter)
         {
-            throw new NotImplementedException();
+            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            {
+                return context.Set<Colour>().SingleOrDefault(filter);
+            }
         }
 
         public List<Colour> GetAll(Expression<Func<Colour, bool>> filter = null)
         {
-            throw new NotImplementedException();
+            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            {
+                return filter == null ? context.Set<Colour>().ToList() : context.Set<Colour>().Where(filter).ToList();
+            }
         }
 
         public void Update(Colour entity)
         {
-            throw new NotImplementedException();
+            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            {
+                var updatedEntity = context.Entry(entity);
+                updatedEntity.State = EntityState.Modified;
+                context.SaveChanges();
+            }
         }
     }
 }
