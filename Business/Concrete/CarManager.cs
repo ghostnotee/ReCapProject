@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Business.Abstract;
 using DataAccess.Abstract;
@@ -18,6 +19,10 @@ namespace Business.Concrete
             if (car.CarModelName.Length >= 2 && car.DailyPrice > 0)
             {
                 _carDal.Add(car);
+            }
+            else
+            {
+                Console.WriteLine("Araba Adı en az iki karakter olmalıdır ve günlük kira ücreti 0'dan büyük olmalıdır.");
             }
         }
 
