@@ -9,5 +9,6 @@ namespace Entities.DTOs
         public string CarBrandName { get; set; }
         public string CarColourName { get; set; }
         public decimal DailyPrice { get; set; }
+        public string Description { get; set; }
     }
 }
