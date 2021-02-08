@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using Entities.Abstract;
+using Fundamentals.Entities;
 
 namespace Entities.Concrete
 {
