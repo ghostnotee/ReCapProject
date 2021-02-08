@@ -1,15 +1,13 @@
-using System;
 using Fundamentals.Entities;
 
-namespace Entities.Concrete
+namespace Entities.DTOs
 {
-    public class Car : IEntity
+    public class CarDetailDto : IDto
     {
         public int CarId { get; set; }
-        public short BrandId { get; set; }
-        public short ColourId { get; set; }
         public string CarModelName { get; set; }
-        public DateTime ModelYear { get; set; }
+        public string CarBrandName { get; set; }
+        public string CarColourName { get; set; }
         public decimal DailyPrice { get; set; }
         public string Description { get; set; }
     }
