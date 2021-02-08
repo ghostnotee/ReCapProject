@@ -4,7 +4,7 @@ using Fundamentals.DataAccess.EntityFramework;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCarDal : EfEntityRepositoryBase<Car, CarRentalCompanyContext>, ICarDal
+    public class EfCustomerDal : EfEntityRepositoryBase<Customer, CarRentalCompanyContext>, ICustomerDal
     {
 
     }
