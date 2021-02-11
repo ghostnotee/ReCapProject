@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Entities.Concrete;
 using Entities.DTOs;
+using Fundamentals.Utilities.Results;
 
 namespace Business.Abstract
 {
@@ -8,7 +9,7 @@ namespace Business.Abstract
     {
         List<Car> GetAll();
         Car GetById(int carId);
-        void Add(Car car);
+        IResult Add(Car car);
         void Update(Car car);
         void Delete(Car car);
         List<Car> GetCarsByBrandId(int brandId);
