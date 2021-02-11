@@ -41,7 +41,7 @@ namespace Business.Concrete
         {
             _carDal.Update(car);
         }
-        public Car Get(int carId)
+        public Car GetById(int carId)
         {
             return _carDal.Get(c => c.CarId == carId);
         }
