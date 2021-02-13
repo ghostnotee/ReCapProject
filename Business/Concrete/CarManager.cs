@@ -1,9 +1,11 @@
-using System;
 using System.Collections.Generic;
 using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using Fundamentals.Utilities.Results;
+using System;
+using Business.Constants;
 
 namespace Business.Concrete
 {
@@ -15,33 +17,35 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
-            if (car.CarModelName.Length >= 2 && car.DailyPrice > 0)
+            if (car.CarModelName.Length < 2)
             {
-                _carDal.Add(car);
+                return new ErrorResult(Messages.CarModelNameInvalid);
             }
-            else
-            {
-                Console.WriteLine("Araba Adı en az iki karakter olmalıdır ve günlük kira ücreti 0'dan büyük olmalıdır.");
-            }
+
+            _carDal.Add(car);
+            return new SuccessResult(Messages.CarAdded);
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
             _carDal.Delete(car);
+            return new Result(true);
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            return new DataResult<List<Car>>(_carDal.GetAll(), true, Messages.CarsListed);
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             _carDal.Update(car);
+            return new Result(true, Messages.CarUpdated);
         }
-        public Car Get(int carId)
+
+        public Car GetById(int carId)
         {
             return _carDal.Get(c => c.CarId == carId);
         }
