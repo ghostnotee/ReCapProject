@@ -4,6 +4,8 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
 using Fundamentals.Utilities.Results;
+using System;
+using Business.Constants;
 
 namespace Business.Concrete
 {
@@ -19,27 +21,30 @@ namespace Business.Concrete
         {
             if (car.CarModelName.Length < 2)
             {
-                return new ErrorResult("Ürün ismi en az 2 karakter olmalıdır");
+                return new ErrorResult(Messages.CarModelNameInvalid);
             }
 
             _carDal.Add(car);
-            return new SuccessResult("Araç eklendi");
+            return new SuccessResult(Messages.CarAdded);
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
             _carDal.Delete(car);
+            return new Result(true);
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            return new DataResult<List<Car>>(_carDal.GetAll(), true, Messages.CarsListed);
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             _carDal.Update(car);
+            return new Result(true, Messages.CarUpdated);
         }
+
         public Car GetById(int carId)
         {
             return _carDal.Get(c => c.CarId == carId);
