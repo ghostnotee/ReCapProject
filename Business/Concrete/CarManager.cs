@@ -21,14 +21,14 @@ namespace Business.Concrete
         {
             if (car.CarModelName.Length < 2)
             {
-                return new ErrorDataResult<Car>(Messages.CarModelNameInvalid);
+                return new ErrorDataResult<Car>(Messages.EntityModelNameInvalid);
             }
-            return new SuccessDataResult<Car>(Messages.CarAdded);
+            return new SuccessDataResult<Car>(Messages.EntityAdded);
         }
 
         public IResult Delete(Car car)
         {
-            return new SuccessDataResult<Car>(Messages.CarDeleted);
+            return new SuccessDataResult<Car>(Messages.EntityDeleted);
         }
 
         public IDataResult<List<Car>> GetAll()
@@ -38,12 +38,12 @@ namespace Business.Concrete
                 return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
 
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.EntitiesListed);
         }
 
         public IDataResult<Car> GetById(int carId)
         {
-            return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == carId), Messages.CarsListed);
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == carId), Messages.EntitiesListed);
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
@@ -53,18 +53,18 @@ namespace Business.Concrete
 
         public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId), Messages.CarsListed);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId), Messages.EntitiesListed);
         }
 
         public IDataResult<List<Car>> GetCarsByColourId(int colourId)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColourId == colourId), Messages.CarsListed);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColourId == colourId), Messages.EntitiesListed);
         }
 
         public IResult Update(Car car)
         {
             _carDal.Update(car);
-            return new SuccessDataResult<Car>(Messages.CarUpdated);
+            return new SuccessDataResult<Car>(Messages.EntityUpdated);
         }
     }
 }

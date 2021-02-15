@@ -2,12 +2,31 @@
 using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
+using Entities.Concrete;
 
 namespace ConsoleUI
 {
     class Program
     {
         static void Main(string[] args)
+        {
+           RentalManager rentalManager = new RentalManager(new EfRentalDal());
+           var result = rentalManager.Add(new Rental {
+               CarId=1,
+               CustomerId=1,
+               RentDate= new DateTime(2021,2,7),
+           });
+
+           Console.WriteLine(result.Message);
+
+
+
+
+           
+           // CarDetailsSample();
+        }
+
+        private static void CarDetailsSample()
         {
             Console.WriteLine("Arabalar : Marka ----- Model ----- Renk ----- Günlük Fiyat -----Açıklama");
 
