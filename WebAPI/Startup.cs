@@ -34,8 +34,8 @@ namespace WebAPI
             services.AddControllers();
 
             // if you need ICarService, give CarManager
-            services.AddSingleton<ICarService, CarManager>();
-            services.AddSingleton<ICarDal,EfCarDal>();
+            // services.AddSingleton<ICarService, CarManager>();
+            // services.AddSingleton<ICarDal,EfCarDal>();
 
             services.AddSwaggerGen(c =>
             {
