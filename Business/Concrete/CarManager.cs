@@ -6,6 +6,10 @@ using Entities.Concrete;
 using Entities.DTOs;
 using Fundamentals.Utilities.Results;
 using Business.Constants;
+using FluentValidation;
+using Business.ValidationRules.FluentValidation;
+using Fundamentals.CrossCuttingConserns.Validation;
+using Fundamentals.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -17,13 +21,12 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if (car.CarModelName.Length < 2)
-            {
-                return new ErrorDataResult<Car>(Messages.EntityModelNameInvalid);
-            }
-            return new SuccessDataResult<Car>(Messages.EntityAdded);
+            _carDal.Add(car);
+
+            return new SuccessResult(Messages.EntityAdded);
         }
 
         public IResult Delete(Car car)
