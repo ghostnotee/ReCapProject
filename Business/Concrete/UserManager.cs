@@ -40,7 +40,8 @@ namespace Business.Concrete
 
         public IDataResult<List<User>> GetByUserName(string name)
         {
-            return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.FirstName.Contains(name) || u.LastName.Contains(name)), Messages.EntitiesListed);
+            return new SuccessDataResult<List<User>>
+            (_userDal.GetAll(u => u.FirstName.Contains(name) || u.LastName.Contains(name)), Messages.EntitiesListed);
         }
 
         public IResult Update(User user)
