@@ -9,8 +9,11 @@ namespace Business.Constants
         public static string EntitiesListed = "Varlık listelendi";
         public static string MaintenanceTime = "Sistem Bakımda";
 
-        //------------**** Rental Messages ****--------
 
+        //------------**** Rental Messages ****--------
         public static string RentalError = "Araç teslim edilmemiş";
+
+        //------------**** CarImage Messages ****--------
+        public static string CarImageLimitExceded = "Fotoğraf limiti aşıldı";
     }
 }
