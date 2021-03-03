@@ -26,18 +26,20 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(IFormFile file, CarImage carImage)
         {
-            IResult result = BusinessRules.Run(CheckIfCarImageLimit(carImage.CarId));
+            IResult result = BusinessRules.Run(CheckCarImageLimit(carImage.CarId));
 
             if (result != null)
             {
                 return result;
             }
+
             carImage.ImagePath = FileStorageHelper.UploadFile(file);
             _carImageDal.Add(carImage);
             return new SuccessResult(Messages.EntityAdded);
         }
 
-        public IResult Delete(IFormFile file, CarImage carImage)
+       
+        public IResult Delete(CarImage carImage)
         {
             FileStorageHelper.DeleteFile(carImage.ImagePath);
             _carImageDal.Delete(carImage);
@@ -59,6 +61,7 @@ namespace Business.Concrete
             return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.CarImageId == carImageId), Messages.EntitiesListed);
         }
 
+        [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(IFormFile file, CarImage carImage)
         {
             carImage.ImagePath = FileStorageHelper.UpdateFile(_carImageDal.Get
@@ -67,7 +70,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IResult CheckIfCarImageLimit(int carId)
+        public IResult CheckCarImageLimit(int carId)
         {
             int numberOfPhotos = _carImageDal.GetAll(i => i.CarId == carId).Count;
             if (numberOfPhotos >= 5)
@@ -81,10 +84,12 @@ namespace Business.Concrete
         {
             string path = @"/WebAPI/Storage/CarImages/defaultImage.jpg";
             var result = _carImageDal.GetAll(c => c.CarId == carId).Any();
+
             if (!result)
             {
                 return new List<CarImage> { new CarImage { CarId = carId, ImagePath = path, Date = DateTime.Now } };
             }
+            
             return _carImageDal.GetAll(p => p.CarId == carId);
         }
     }

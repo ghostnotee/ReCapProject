@@ -10,6 +10,7 @@ namespace Fundamentals.Utilities.Helpers
         public static string UploadFile(IFormFile file)
         {
             string sourcePath = Path.GetTempFileName();
+
             if (file != null)
             {
                 using (var stream = new FileStream(sourcePath, FileMode.Create))
@@ -17,23 +18,24 @@ namespace Fundamentals.Utilities.Helpers
                     file.CopyTo(stream);
                 }
             }
-            var destinationFilePath = uploadPath(file);
-            File.Move(sourcePath, destinationFilePath);
-            return destinationFilePath;
+
+            var destinationFullPath = uploadPath(file);
+            File.Move(sourcePath, destinationFullPath);
+            return destinationFullPath;
         }
 
         public static string UpdateFile(string sourcePath, IFormFile file)
         {
-            var result = uploadPath(file);
+            var newFileFullPath = uploadPath(file);
             if (sourcePath.Length > 0)
             {
-                using (var stream = new FileStream(result, FileMode.Create))
+                using (var stream = new FileStream(newFileFullPath, FileMode.Create))
                 {
                     file.CopyTo(stream);
                 }
             }
             File.Delete(sourcePath);
-            return result;
+            return newFileFullPath;
         }
 
         public static IResult DeleteFile(string path)
@@ -55,11 +57,11 @@ namespace Fundamentals.Utilities.Helpers
             FileInfo fileInfo = new FileInfo(file.FileName);
             string fileExension = fileInfo.Extension;
 
-            string path = Environment.CurrentDirectory + @"/Storage/CarImages/";
+            string path = Environment.CurrentDirectory + "\\Storage\\CarImages\\";
             var fileName = Guid.NewGuid().ToString() + fileExension;
 
-            string destinationFilePath = $@"{path}\{fileName}";
-            return destinationFilePath;
+            string destinationFullPath = $@"{path}\{fileName}";
+            return destinationFullPath;
         }
     }
 }
