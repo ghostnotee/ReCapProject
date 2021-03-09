@@ -29,14 +29,12 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("car/{carId}")]
-        public IActionResult GetAllByCarId(int carId)
+        [HttpGet("getbycarid")]
+        public IActionResult GetAllByCarId(int id)
         {
-            var result = _carImageService.GetByCarId(carId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = _carImageService.GetByCarId(id);
+
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -52,7 +50,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
             var result = _carImageService.GetById(id);
