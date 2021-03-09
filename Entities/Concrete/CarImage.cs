@@ -1,5 +1,6 @@
 using System;
 using Fundamentals.Entities;
+using Fundamentals.Utilities.Helpers;
 
 namespace Entities.Concrete
 {

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(CarRentalCompanyContext))]
-    [Migration("20210225215056_CarImagesSchema")]
-    partial class CarImagesSchema
+    [Migration("20210303210928_InıtialCreate")]
+    partial class InıtialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
