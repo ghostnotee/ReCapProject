@@ -65,14 +65,25 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
         }
 
-        public IDataResult<List<CarImage>> GetByCarId(int carId)
-        {
-            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == carId), Messages.EntitiesListed);
-        }
-
         public IDataResult<CarImage> GetById(int carImageId)
         {
-            return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.CarImageId == carImageId), Messages.EntitiesListed);
+            return new SuccessDataResult<CarImage>(_carImageDal.Get(i => i.CarImageId == carImageId), Messages.EntitiesListed);
+        }
+
+        public IDataResult<List<CarImage>> GetByCarId(int carId)
+        {
+            IResult result = BusinessRules.Run(CheckIfCarImageNull(carId));
+            if (result != null)
+            {
+                string defaultImagePath = Path.Combine(Environment.CurrentDirectory, "Storage", "Images", "default.jpg");
+
+                List<CarImage> carImages = new List<CarImage>();
+                carImages.Add(new CarImage { CarId = carId, ImagePath = defaultImagePath });
+
+                return new SuccessDataResult<List<CarImage>>(carImages, Messages.EntitiesListed);
+            }
+
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == carId), Messages.EntitiesListed);
         }
 
         [ValidationAspect(typeof(CarImageValidator))]
@@ -87,12 +98,14 @@ namespace Business.Concrete
 
 
             string currentImagePath = _carImageDal.Get(i => i.CarImageId == carImage.CarImageId).ImagePath;
-            carImage.ImagePath = FileStorageHelper.UpdateFile(file,currentImagePath).Message;
+            carImage.ImagePath = FileStorageHelper.UpdateFile(file, currentImagePath).Message;
 
             _carImageDal.Update(carImage);
             return new SuccessResult(Messages.EntityAdded);
         }
 
+
+        // Business Rules
         private IResult HaveSupportedFileType(string contentType)
         {
             string[] supportedFileTypes = { ".jpg", ".jpeg", ".png" };
@@ -105,6 +118,7 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+
         private IResult CheckImageFileLength(long length)
         {
             if (length >= 1048576)
@@ -114,18 +128,6 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        private List<CarImage> CheckIfCarImageNull(int carId)
-        {
-            string path = @"/WebAPI/Storage/CarImages/defaultImage.jpg";
-            var result = _carImageDal.GetAll(c => c.CarId == carId).Any();
-
-            if (!result)
-            {
-                return new List<CarImage> { new CarImage { CarId = carId, ImagePath = path } };
-            }
-
-            return _carImageDal.GetAll(p => p.CarId == carId);
-        }
         public IResult CheckCarImageLimit(int carId)
         {
             int numberOfPhotos = _carImageDal.GetAll(i => i.CarId == carId).Count;
@@ -134,6 +136,18 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.CarImageLimitExceded);
             }
             return new SuccessResult();
+        }
+
+        private IResult CheckIfCarImageNull(int carId)
+        {
+            var result = _carImageDal.GetAll(c => c.CarId == carId).Any();
+
+            if (result)
+            {
+                return new SuccessResult("Photo found!");
+            }
+
+            return new ErrorResult("No photo found!");
         }
     }
 }
