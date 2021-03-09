@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Business.Abstract;
 using Business.Constants;
@@ -23,25 +24,38 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
         }
 
+
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(IFormFile file, CarImage carImage)
         {
-            IResult result = BusinessRules.Run(CheckCarImageLimit(carImage.CarId));
+            IResult result = BusinessRules.Run(
+                CheckCarImageLimit(carImage.CarId),
+                HaveSupportedFileType(file.FileName),
+                CheckImageFileLength(file.Length)
+            );
 
-            if (result != null)
+            if (result != null) return result;
+
+            var fileStorageSuccess = FileStorageHelper.UploadFile(file);
+            if (!fileStorageSuccess.Success)
             {
-                return result;
+                return new ErrorResult(Messages.FileUploadFailed);
             }
 
-            carImage.ImagePath = FileStorageHelper.UploadFile(file);
+            carImage.ImagePath = fileStorageSuccess.Message;
             _carImageDal.Add(carImage);
             return new SuccessResult(Messages.EntityAdded);
         }
 
-       
         public IResult Delete(CarImage carImage)
         {
-            FileStorageHelper.DeleteFile(carImage.ImagePath);
+            var result = FileStorageHelper.DeleteFile(_carImageDal.Get(i => i.CarImageId == carImage.CarImageId).ImagePath);
+
+            if (!result.Success)
+            {
+                return new ErrorResult("Image file remove failed!");
+            }
+
             _carImageDal.Delete(carImage);
             return new SuccessResult(Messages.EntityDeleted);
         }
@@ -64,18 +78,38 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(IFormFile file, CarImage carImage)
         {
-            carImage.ImagePath = FileStorageHelper.UpdateFile(_carImageDal.Get
-                                    (i => i.CarImageId == carImage.CarImageId).ImagePath, file);
+            IResult result = BusinessRules.Run(
+                 HaveSupportedFileType(file.FileName),
+                 CheckImageFileLength(file.Length)
+             );
+
+            if (result != null) return result;
+
+
+            string currentImagePath = _carImageDal.Get(i => i.CarImageId == carImage.CarImageId).ImagePath;
+            carImage.ImagePath = FileStorageHelper.UpdateFile(file,currentImagePath).Message;
+
             _carImageDal.Update(carImage);
-            return new SuccessResult();
+            return new SuccessResult(Messages.EntityAdded);
         }
 
-        public IResult CheckCarImageLimit(int carId)
+        private IResult HaveSupportedFileType(string contentType)
         {
-            int numberOfPhotos = _carImageDal.GetAll(i => i.CarId == carId).Count;
-            if (numberOfPhotos >= 5)
+            string[] supportedFileTypes = { ".jpg", ".jpeg", ".png" };
+            var fileExtension = Path.GetExtension(contentType).ToLower();
+            bool result = supportedFileTypes.Contains(fileExtension);
+
+            if (result == false)
             {
-                return new ErrorResult(Messages.CarImageLimitExceded);
+                return new ErrorResult("Please attach image file!");
+            }
+            return new SuccessResult();
+        }
+        private IResult CheckImageFileLength(long length)
+        {
+            if (length >= 1048576)
+            {
+                return new ErrorResult("File length must be less than 1 MB");
             }
             return new SuccessResult();
         }
@@ -87,10 +121,19 @@ namespace Business.Concrete
 
             if (!result)
             {
-                return new List<CarImage> { new CarImage { CarId = carId, ImagePath = path, Date = DateTime.Now } };
+                return new List<CarImage> { new CarImage { CarId = carId, ImagePath = path } };
             }
-            
+
             return _carImageDal.GetAll(p => p.CarId == carId);
+        }
+        public IResult CheckCarImageLimit(int carId)
+        {
+            int numberOfPhotos = _carImageDal.GetAll(i => i.CarId == carId).Count;
+            if (numberOfPhotos >= 5)
+            {
+                return new ErrorResult(Messages.CarImageLimitExceded);
+            }
+            return new SuccessResult();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Fundamentals.Aspects.Autofac.Validation
         {
             if (!typeof(IValidator).IsAssignableFrom(validatorType))
             {
-                throw new System.Exception("Bu bir doğrulama sınıfı değil");
+                throw new System.Exception("This is not a validation class!");
             }
 
             _validatorType = validatorType;

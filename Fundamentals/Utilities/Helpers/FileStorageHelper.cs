@@ -7,35 +7,24 @@ namespace Fundamentals.Utilities.Helpers
 {
     public class FileStorageHelper
     {
-        public static string UploadFile(IFormFile file)
+        public static IResult UploadFile(IFormFile file)
         {
-            string sourcePath = Path.GetTempFileName();
 
-            if (file != null)
+            if (file.Length == 0)
             {
-                using (var stream = new FileStream(sourcePath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
+                return new ErrorResult("Please attach file");
             }
 
-            var destinationFullPath = uploadPath(file);
-            File.Move(sourcePath, destinationFullPath);
-            return destinationFullPath;
-        }
+            string sourceFileName = Path.GetTempFileName();
 
-        public static string UpdateFile(string sourcePath, IFormFile file)
-        {
-            var newFileFullPath = uploadPath(file);
-            if (sourcePath.Length > 0)
+            using (var stream = new FileStream(sourceFileName, FileMode.Create))
             {
-                using (var stream = new FileStream(newFileFullPath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
+                file.CopyTo(stream);
             }
-            File.Delete(sourcePath);
-            return newFileFullPath;
+
+            string destFileName = CreateFullPath(file);
+            File.Move(sourceFileName, destFileName);
+            return new SuccessResult(destFileName);
         }
 
         public static IResult DeleteFile(string path)
@@ -44,24 +33,41 @@ namespace Fundamentals.Utilities.Helpers
             {
                 File.Delete(path);
             }
-            catch (Exception exception)
+            catch (System.Exception exception)
             {
+
                 return new ErrorResult(exception.Message);
             }
-
             return new SuccessResult();
         }
 
-        public static string uploadPath(IFormFile file)
+        public static IResult UpdateFile(IFormFile file, string currentImageFile)
+        {
+            if (file.Length == 0)
+            {
+                return new ErrorResult("Please attach file");
+            }
+
+            string destFileName = CreateFullPath(file);
+
+            using (var stream = new FileStream(destFileName, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+
+            File.Delete(currentImageFile);
+
+            return new SuccessResult(destFileName);
+        }
+
+        private static string CreateFullPath(IFormFile file)
         {
             FileInfo fileInfo = new FileInfo(file.FileName);
-            string fileExension = fileInfo.Extension;
+            string fileExtension = fileInfo.Extension;
+            string photoRootDirectory = Path.Combine(Environment.CurrentDirectory, "Storage", "Images");
+            string fileName = Guid.NewGuid().ToString() + fileExtension;
 
-            string path = Environment.CurrentDirectory + "\\Storage\\CarImages\\";
-            var fileName = Guid.NewGuid().ToString() + fileExension;
-
-            string destinationFullPath = $@"{path}\{fileName}";
-            return destinationFullPath;
+            return Path.Combine(photoRootDirectory, fileName);
         }
     }
 }

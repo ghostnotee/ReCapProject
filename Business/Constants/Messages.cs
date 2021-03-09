@@ -15,5 +15,6 @@ namespace Business.Constants
 
         //------------**** CarImage Messages ****--------
         public static string CarImageLimitExceded = "Fotoğraf limiti aşıldı";
+        public static string FileUploadFailed = "Dosya yükleme başarısız";
     }
 }

@@ -7,8 +7,8 @@ namespace Business.ValidationRules.FluentValidation
     {
         public CarImageValidator()
         {
-            RuleFor(i => i.CarId).NotNull();
-            RuleFor(i => i.CarId).GreaterThan(0);
+            RuleFor(i => i.CarId).NotNull().WithMessage("CarId cannot be empty!");
+            RuleFor(i => i.CarId).NotEmpty().WithMessage("CarId cannot be empty!");
         }
     }
 }
