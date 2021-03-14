@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Business.Abstract;
 using Business.Constants;
 using DataAccess.Abstract;
-using Entities.Concrete;
+using Fundamentals.Entities.Concrete;
 using Fundamentals.Utilities.Results;
 
 namespace Business.Concrete
@@ -35,13 +35,23 @@ namespace Business.Concrete
 
         public IDataResult<User> GetById(int userId)
         {
-            return new SuccessDataResult<User>(_userDal.Get(u => u.UserId == userId), Messages.EntitiesListed);
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == userId), Messages.EntitiesListed);
+        }
+
+        public IDataResult<User> GetByMail(string email)
+        {
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
         }
 
         public IDataResult<List<User>> GetByUserName(string name)
         {
             return new SuccessDataResult<List<User>>
             (_userDal.GetAll(u => u.FirstName.Contains(name) || u.LastName.Contains(name)), Messages.EntitiesListed);
+        }
+
+        public IDataResult<List<OperationClaim>> GetClaims(User user)
+        {
+            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
 
         public IResult Update(User user)

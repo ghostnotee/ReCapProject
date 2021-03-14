@@ -10,6 +10,7 @@ using FluentValidation;
 using Business.ValidationRules.FluentValidation;
 using Fundamentals.CrossCuttingConserns.Validation;
 using Fundamentals.Aspects.Autofac.Validation;
+using BusinessAspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -21,6 +22,7 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
