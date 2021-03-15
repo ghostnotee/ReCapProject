@@ -11,6 +11,7 @@ using Business.ValidationRules.FluentValidation;
 using Fundamentals.CrossCuttingConserns.Validation;
 using Fundamentals.Aspects.Autofac.Validation;
 using BusinessAspects.Autofac;
+using Fundamentals.Aspects.Autofac.Caching;
 
 namespace Business.Concrete
 {
@@ -24,6 +25,7 @@ namespace Business.Concrete
 
         [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {
             _carDal.Add(car);
@@ -33,12 +35,14 @@ namespace Business.Concrete
 
         public IResult Delete(Car car)
         {
-            return new SuccessDataResult<Car>(Messages.EntityDeleted);
+            return new SuccessResult(Messages.EntityDeleted);
         }
 
+
+        [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour == 4)
+            if (DateTime.Now.Hour == 1)
             {
                 return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
@@ -66,6 +70,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColourId == colourId), Messages.EntitiesListed);
         }
 
+
+        [CacheRemoveAspect("ICarService.Get")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
