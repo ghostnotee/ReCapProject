@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using Business.Abstract;
 using Business.Constants;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Fundamentals.Aspects.Autofac.Performance;
+using Fundamentals.Aspects.Autofac.Transaction;
 using Fundamentals.Utilities.Results;
 
 namespace Business.Concrete
@@ -28,12 +31,26 @@ namespace Business.Concrete
             return new ErrorResult(Messages.RentalError);
         }
 
+
+        [TransactionScopeAspect]
+        public IResult AddTransactionTest(Rental rental)
+        {
+            Add(rental);
+            if (rental.ReturnDate == null)
+            {
+                throw new Exception("");
+            }
+            Add(rental);
+            return null;
+        }
+
         public IResult Delete(Rental rental)
         {
             _rentalDal.Delete(rental);
             return new SuccessResult(Messages.EntityDeleted);
         }
 
+        [PerformanceAspect(5)]
         public IDataResult<List<Rental>> GetAll()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.EntitiesListed);
