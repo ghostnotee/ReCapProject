@@ -62,7 +62,7 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.EntitiesListed);
         }
 
         public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
