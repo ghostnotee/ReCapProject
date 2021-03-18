@@ -28,6 +28,7 @@ namespace WebAPI
         {
 
             services.AddControllers();
+            services.AddCors();
 
             // if you need ICarService, give CarManager
             // services.AddSingleton<ICarService, CarManager>(); Autofac'le yapılandırıldı.
@@ -69,6 +70,8 @@ namespace WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
+
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
