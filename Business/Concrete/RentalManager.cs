@@ -4,6 +4,7 @@ using Business.Abstract;
 using Business.Constants;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Fundamentals.Aspects.Autofac.Performance;
 using Fundamentals.Aspects.Autofac.Transaction;
 using Fundamentals.Utilities.Results;
@@ -59,6 +60,16 @@ namespace Business.Concrete
         public IDataResult<Rental> GetById(int rentalId)
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.RentalId == rentalId), Messages.EntitiesListed);
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalDetails()
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(), Messages.EntitiesListed);
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalDetail(int rentalId)
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(r => r.RentalId == rentalId), Messages.EntitiesListed);
         }
 
         public IResult Update(Rental rental)
