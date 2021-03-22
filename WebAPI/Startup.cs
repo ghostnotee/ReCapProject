@@ -11,6 +11,8 @@ using Microsoft.OpenApi.Models;
 using Fundamentals.Extensions;
 using Fundamentals.Utilities.IoC;
 using Fundamentals.DependencyResolvers;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace WebAPI
 {
@@ -74,6 +76,12 @@ namespace WebAPI
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Storage")),
+                RequestPath = "/Storage"
+            });
 
             app.UseRouting();
 

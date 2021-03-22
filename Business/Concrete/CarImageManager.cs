@@ -75,7 +75,7 @@ namespace Business.Concrete
             IResult result = BusinessRules.Run(CheckIfCarImageNull(carId));
             if (result != null)
             {
-                string defaultImagePath = Path.Combine(Environment.CurrentDirectory, "Storage", "Images", "default.jpg");
+                string defaultImagePath = Path.Combine("/Storage", "Images", "default.jpg");
 
                 List<CarImage> carImages = new List<CarImage>();
                 carImages.Add(new CarImage { CarId = carId, ImagePath = defaultImagePath });

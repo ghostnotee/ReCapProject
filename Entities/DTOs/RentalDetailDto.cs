@@ -7,6 +7,7 @@ namespace Entities.DTOs
     {
         public int RentalId { get; set; }
         public string CarModelBrandName { get; set; }
+        public string CustomerName { get; set; }
         public string CustomerFullName { get; set; }
         public DateTime RentDate { get; set; }
         public DateTime? ReturnDate { get; set; }
