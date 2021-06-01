@@ -1,6 +1,8 @@
+using System;
 using Entities.Concrete;
 using Fundamentals.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -8,9 +10,16 @@ namespace DataAccess.Concrete.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                @"Server=localhost,1433;Database=CarRentalCompany;User=SA;Password=5uper5trongPW!"
-            );
+
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                          .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                          .AddJsonFile("appsettings.json")
+                          .Build();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+
+            // optionsBuilder.UseSqlServer(
+            //     @"Server=localhost,1433;Database=CarRentalCompany;User=SA;Password=5uper5trongPW!"
+            // );
         }
 
         public DbSet<Car> Cars { get; set; }
